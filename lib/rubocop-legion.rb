@@ -13,6 +13,7 @@ require 'rubocop/cop/legion/helper_migration/direct_json'
 require 'rubocop/cop/legion/helper_migration/direct_cache'
 require 'rubocop/cop/legion/helper_migration/direct_local_cache'
 require 'rubocop/cop/legion/helper_migration/direct_crypt'
+require 'rubocop/cop/legion/helper_migration/logging_guard'
 
 # Legion/ConstantSafety
 require 'rubocop/cop/legion/constant_safety/bare_data_define'

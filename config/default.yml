@@ -43,6 +43,12 @@ Legion/HelperMigration/DirectCrypt:
   Severity: warning
   VersionAdded: '0.1'
 
+Legion/HelperMigration/LoggingGuard:
+  Description: 'Remove unnecessary `respond_to?(:log_warn)` or `defined?(Legion::Logging)` guards.'
+  Enabled: true
+  Severity: convention
+  VersionAdded: '0.1.2'
+
 # Legion/ConstantSafety — prevent namespace resolution bugs inside module Legion
 
 Legion/ConstantSafety:

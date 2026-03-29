@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.1.1] - 2026-03-29
+
+### Fixed
+- BareRescue auto-corrector no longer corrupts inline rescue modifiers (`foo rescue nil`)
+- NoCapture removed auto-correct to prevent correction loop with Lint/UselessAssignment
+- SilentCapture skips `_`-prefixed variables (Ruby unused variable convention)
+
+### Changed
+- HelperMigration cops scoped to `lib/legion/extensions/**/*.rb` (lex-* gems only)
+- Extension cops scoped to `lib/legion/extensions/**/*.rb` with spec exclusion
+- ApiStringKeys scoped to `lib/legion/extensions/**/*.rb` (Faraday responses use string keys)
+
 ## [0.1.0] - 2026-03-29
 
 ### Added

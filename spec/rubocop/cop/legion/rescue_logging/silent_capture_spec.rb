@@ -103,6 +103,28 @@ RSpec.describe RuboCop::Cop::Legion::RescueLogging::SilentCapture, :config do
     end
   end
 
+  context 'when captured variable has underscore prefix' do
+    it 'does not register an offense for rescue => _e' do
+      expect_no_offenses(<<~RUBY)
+        begin
+          risky
+        rescue => _e
+          nil
+        end
+      RUBY
+    end
+
+    it 'does not register an offense for rescue StandardError => _err' do
+      expect_no_offenses(<<~RUBY)
+        begin
+          risky
+        rescue StandardError => _err
+          nil
+        end
+      RUBY
+    end
+  end
+
   context 'when rescue has no variable capture' do
     it 'does not register an offense for rescue with no capture' do
       expect_no_offenses(<<~RUBY)

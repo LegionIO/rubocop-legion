@@ -14,14 +14,6 @@ RSpec.describe RuboCop::Cop::Legion::RescueLogging::NoCapture, :config do
           nil
         end
       RUBY
-
-      expect_correction(<<~RUBY)
-        begin
-          risky
-        rescue StandardError => e
-          nil
-        end
-      RUBY
     end
 
     it 'registers an offense for rescue ArgumentError, TypeError' do
@@ -33,14 +25,6 @@ RSpec.describe RuboCop::Cop::Legion::RescueLogging::NoCapture, :config do
           nil
         end
       RUBY
-
-      expect_correction(<<~RUBY)
-        begin
-          risky
-        rescue ArgumentError, TypeError => e
-          nil
-        end
-      RUBY
     end
 
     it 'registers an offense for rescue RuntimeError in a method' do
@@ -49,14 +33,6 @@ RSpec.describe RuboCop::Cop::Legion::RescueLogging::NoCapture, :config do
           risky
         rescue RuntimeError
         ^^^^^^^^^^^^^^^^^^^ Exception class specified but not captured. Use `rescue RuntimeError => e` and log the exception.
-          false
-        end
-      RUBY
-
-      expect_correction(<<~RUBY)
-        def foo
-          risky
-        rescue RuntimeError => e
           false
         end
       RUBY
@@ -93,6 +69,14 @@ RSpec.describe RuboCop::Cop::Legion::RescueLogging::NoCapture, :config do
         rescue
           nil
         end
+      RUBY
+    end
+  end
+
+  context 'when rescue modifier' do
+    it 'does not register an offense for inline rescue' do
+      expect_no_offenses(<<~RUBY)
+        foo rescue StandardError
       RUBY
     end
   end

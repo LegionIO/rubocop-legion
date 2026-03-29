@@ -29,10 +29,21 @@ module RuboCop
 
           def on_resbody(node)
             return unless node.exceptions.empty? && node.exception_variable.nil?
+            return if rescue_modifier?(node)
 
             add_offense(node, severity: :warning) do |corrector|
               corrector.insert_after(node.loc.keyword, ' => e')
             end
+          end
+
+          private
+
+          def rescue_modifier?(node)
+            rescue_node = node.parent
+            return false unless rescue_node&.rescue_type?
+
+            body = rescue_node.children.first
+            body && body.source_range.line == node.loc.keyword.line
           end
         end
       end

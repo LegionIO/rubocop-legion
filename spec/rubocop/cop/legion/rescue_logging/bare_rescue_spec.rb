@@ -77,4 +77,18 @@ RSpec.describe RuboCop::Cop::Legion::RescueLogging::BareRescue, :config do
       RUBY
     end
   end
+
+  context 'when rescue modifier (inline rescue)' do
+    it 'does not register an offense for inline rescue nil' do
+      expect_no_offenses(<<~RUBY)
+        foo rescue nil
+      RUBY
+    end
+
+    it 'does not register an offense for inline rescue with assignment' do
+      expect_no_offenses(<<~RUBY)
+        result = risky_call rescue default_value
+      RUBY
+    end
+  end
 end

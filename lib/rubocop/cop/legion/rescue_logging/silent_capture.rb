@@ -32,6 +32,8 @@ module RuboCop
             return unless node.exception_variable
 
             var_name = variable_name(node.exception_variable)
+            return if var_name.to_s.start_with?('_')
+
             body = node.body
 
             return if body && (references_variable?(body, var_name) || contains_raise?(body))

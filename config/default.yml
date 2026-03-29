@@ -3,7 +3,7 @@
 Legion/HelperMigration:
   Enabled: true
   Include:
-    - 'lib/**/*.rb'
+    - 'lib/legion/extensions/**/*.rb'
   Exclude:
     - 'spec/**/*'
 
@@ -163,7 +163,7 @@ Legion/Framework/ApiStringKeys:
   Severity: warning
   VersionAdded: '0.1'
   Include:
-    - 'lib/**/*.rb'
+    - 'lib/legion/extensions/**/*.rb'
   Exclude:
     - 'spec/**/*'
 
@@ -171,6 +171,10 @@ Legion/Framework/ApiStringKeys:
 
 Legion/Extension:
   Enabled: true
+  Include:
+    - 'lib/legion/extensions/**/*.rb'
+  Exclude:
+    - 'spec/**/*'
 
 Legion/Extension/ActorSingularModule:
   Description: 'Use `module Actor` (singular). Framework discovers actors in `Actor`, not `Actors`.'

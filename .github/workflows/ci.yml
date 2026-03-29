@@ -1,0 +1,13 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  ci:
+    uses: LegionIO/.github/.github/workflows/ci.yml@main
+    with:
+      ruby-versions: '["3.4"]'

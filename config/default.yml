@@ -1,0 +1,25 @@
+Legion/HelperMigration:
+  Enabled: true
+  Include:
+    - 'lib/**/*.rb'
+  Exclude:
+    - 'spec/**/*'
+
+Legion/ConstantSafety:
+  Enabled: true
+
+Legion/Singleton:
+  Enabled: true
+
+Legion/RescueLogging:
+  Enabled: true
+  Include:
+    - 'lib/**/*.rb'
+  Exclude:
+    - 'spec/**/*'
+
+Legion/Framework:
+  Enabled: true
+
+Legion/Extension:
+  Enabled: true

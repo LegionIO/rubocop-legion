@@ -1,3 +1,5 @@
+# Legion/HelperMigration — use per-extension helpers, not global singletons
+
 Legion/HelperMigration:
   Enabled: true
   Include:
@@ -5,11 +7,87 @@ Legion/HelperMigration:
   Exclude:
     - 'spec/**/*'
 
+Legion/HelperMigration/DirectLogging:
+  Description: 'Use `log.method` helper instead of `Legion::Logging.method`.'
+  Enabled: true
+  Severity: warning
+  VersionAdded: '0.1'
+
+Legion/HelperMigration/OldLoggingMethods:
+  Description: 'Use `log.method` instead of deprecated `log_method` helpers.'
+  Enabled: true
+  Severity: warning
+  VersionAdded: '0.1'
+
+Legion/HelperMigration/DirectJson:
+  Description: 'Use `json_load`/`json_dump` helpers instead of `Legion::JSON.load`/`.dump`.'
+  Enabled: true
+  Severity: convention
+  VersionAdded: '0.1'
+
+Legion/HelperMigration/DirectCache:
+  Description: 'Use `cache_get`/`cache_set`/`cache_delete` helpers instead of `Legion::Cache` methods.'
+  Enabled: true
+  Severity: warning
+  VersionAdded: '0.1'
+
+Legion/HelperMigration/DirectLocalCache:
+  Description: 'Use `local_cache_get`/`local_cache_set` helpers instead of `Legion::Cache::Local` methods.'
+  Enabled: true
+  Severity: warning
+  VersionAdded: '0.1'
+
+Legion/HelperMigration/DirectCrypt:
+  Description: 'Use `vault_get`/`vault_exist?` helpers instead of `Legion::Crypt` methods.'
+  Enabled: true
+  Severity: warning
+  VersionAdded: '0.1'
+
+# Legion/ConstantSafety — prevent namespace resolution bugs inside module Legion
+
 Legion/ConstantSafety:
   Enabled: true
 
+Legion/ConstantSafety/BareDataDefine:
+  Description: 'Use `::Data.define` inside `module Legion` to avoid resolving to `Legion::Data`.'
+  Enabled: true
+  Severity: error
+  VersionAdded: '0.1'
+
+Legion/ConstantSafety/BareProcess:
+  Description: 'Use `::Process` inside `module Legion` to avoid resolving to `Legion::Process`.'
+  Enabled: true
+  Severity: error
+  VersionAdded: '0.1'
+
+Legion/ConstantSafety/BareJson:
+  Description: 'Use `::JSON` inside `module Legion` to avoid resolving to `Legion::JSON`.'
+  Enabled: true
+  Severity: error
+  VersionAdded: '0.1'
+
+Legion/ConstantSafety/InheritParam:
+  Description: 'Pass `false` as inherit param to `const_defined?`/`const_get` on dynamic modules.'
+  Enabled: true
+  Severity: convention
+  VersionAdded: '0.1'
+
+# Legion/Singleton — enforce .instance on singleton classes
+
 Legion/Singleton:
   Enabled: true
+
+Legion/Singleton/UseInstance:
+  Description: 'Use `.instance` instead of `.new` for singleton classes.'
+  Enabled: true
+  Severity: error
+  VersionAdded: '0.1'
+  SingletonClasses:
+    - TokenCache
+    - Registry
+    - Catalog
+
+# Legion/RescueLogging — every rescue must log or re-raise
 
 Legion/RescueLogging:
   Enabled: true
@@ -18,8 +96,138 @@ Legion/RescueLogging:
   Exclude:
     - 'spec/**/*'
 
+Legion/RescueLogging/BareRescue:
+  Description: 'Bare `rescue` swallows exceptions silently. Capture with `rescue => e`.'
+  Enabled: true
+  Severity: warning
+  VersionAdded: '0.1'
+
+Legion/RescueLogging/NoCapture:
+  Description: 'Exception class specified but not captured. Use `rescue Error => e`.'
+  Enabled: true
+  Severity: convention
+  VersionAdded: '0.1'
+
+Legion/RescueLogging/SilentCapture:
+  Description: 'Captured exception variable is never logged or re-raised.'
+  Enabled: true
+  Severity: warning
+  VersionAdded: '0.1'
+
+# Legion/Framework — Sequel, Sinatra, Thor, Faraday, concurrency, cache, API gotchas
+
 Legion/Framework:
   Enabled: true
 
+Legion/Framework/EagerSequelModel:
+  Description: '`Sequel::Model(:table)` introspects schema at require time. Use lazy define pattern.'
+  Enabled: true
+  Severity: warning
+  VersionAdded: '0.1'
+
+Legion/Framework/SinatraHostAuth:
+  Description: 'Sinatra 4.0+ requires `set :host_authorization` or all requests get 403.'
+  Enabled: true
+  Severity: convention
+  VersionAdded: '0.1'
+
+Legion/Framework/ThorReservedRun:
+  Description: 'Thor 1.5+ reserves `run`. Rename the method or use `map`.'
+  Enabled: true
+  Severity: warning
+  VersionAdded: '0.1'
+  Include:
+    - 'lib/**/cli/**/*.rb'
+
+Legion/Framework/FaradayXmlMiddleware:
+  Description: 'Faraday >= 2.0 removed built-in `:xml` middleware.'
+  Enabled: true
+  Severity: error
+  VersionAdded: '0.1'
+
+Legion/Framework/ModuleFunctionPrivate:
+  Description: '`private` after `module_function` resets visibility. Do not use both together.'
+  Enabled: true
+  Severity: convention
+  VersionAdded: '0.1'
+
+Legion/Framework/CacheTimeCoercion:
+  Description: 'Time objects become Strings after cache round-trip. Coerce at read boundaries.'
+  Enabled: true
+  Severity: convention
+  VersionAdded: '0.1'
+
+Legion/Framework/ApiStringKeys:
+  Description: '`Legion::JSON.load` returns symbol keys. Use `body[:key]` not `body["key"]`.'
+  Enabled: true
+  Severity: warning
+  VersionAdded: '0.1'
+  Include:
+    - 'lib/**/*.rb'
+  Exclude:
+    - 'spec/**/*'
+
+# Legion/Extension — LEX structural convention enforcement
+
 Legion/Extension:
   Enabled: true
+
+Legion/Extension/ActorSingularModule:
+  Description: 'Use `module Actor` (singular). Framework discovers actors in `Actor`, not `Actors`.'
+  Enabled: true
+  Severity: error
+  VersionAdded: '0.1'
+
+Legion/Extension/CoreExtendGuard:
+  Description: 'Guard `extend Core` with `const_defined?` for standalone test compatibility.'
+  Enabled: true
+  Severity: error
+  VersionAdded: '0.1'
+
+Legion/Extension/RunnerMustBeModule:
+  Description: 'Runners must be modules, not classes.'
+  Enabled: true
+  Severity: warning
+  VersionAdded: '0.1'
+
+Legion/Extension/RunnerIncludeHelpers:
+  Description: 'Runner modules need `include Helpers::Lex` or `extend self`.'
+  Enabled: true
+  Severity: convention
+  VersionAdded: '0.1'
+
+Legion/Extension/SelfContainedActorRunnerClass:
+  Description: 'Self-contained actors must override `runner_class`.'
+  Enabled: true
+  Severity: warning
+  VersionAdded: '0.1'
+
+Legion/Extension/RunnerReturnHash:
+  Description: 'Runner methods must return a Hash.'
+  Enabled: true
+  Severity: convention
+  VersionAdded: '0.1'
+
+Legion/Extension/SettingsKeyMethod:
+  Description: '`Legion::Settings` has no `key?` method. Use `!Settings[:key].nil?`.'
+  Enabled: true
+  Severity: error
+  VersionAdded: '0.1'
+
+Legion/Extension/SettingsBracketMultiArg:
+  Description: '`Settings#[]` takes 1 arg. Use `Settings.dig(...)` for nested access.'
+  Enabled: true
+  Severity: error
+  VersionAdded: '0.1'
+
+Legion/Extension/LlmAskKwargs:
+  Description: '`Legion::LLM.ask` only accepts `message:`. No extra kwargs.'
+  Enabled: true
+  Severity: error
+  VersionAdded: '0.1'
+
+Legion/Extension/DataRequiredWithoutMigrations:
+  Description: '`data_required?` returns true but migrations may be missing.'
+  Enabled: true
+  Severity: warning
+  VersionAdded: '0.1'

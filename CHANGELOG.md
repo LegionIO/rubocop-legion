@@ -1,5 +1,33 @@
 # Changelog
 
+## [0.1.6] - 2026-03-29
+
+### Added
+- Bundled `rubocop-performance` (52 cops) — Ruby performance anti-pattern detection, all enabled by default
+- Bundled `rubocop-thread_safety` (6 cops) — thread safety analysis for concurrent code
+- Tuned ThreadSafety defaults: `NewThread` excludes service/connection files, `ClassInstanceVariable` excludes singletons, `RackMiddlewareInstanceVariable` disabled, `DirChdir` allows block form
+
+## [0.1.5] - 2026-03-29
+
+### Added
+- New cop `Legion/Framework/MutexNestedSync`: detect nested `synchronize` blocks (deadlock risk)
+- New cop `Legion/Extension/ActorEnabledSideEffects`: flag `enabled?` in actor classes that runs during boot (keep side-effect-free)
+
+## [0.1.4] - 2026-03-29
+
+### Added
+- New cop `Legion/HelperMigration/DirectData`: use `data_connection`/`local_data_*` helpers instead of `Legion::Data::Connection`/`Legion::Data::Local` (auto-fix)
+- New cop `Legion/HelperMigration/DirectLlmEmbed`: use `llm_embed` helper instead of `Legion::LLM.embed` (auto-fix)
+- New cop `Legion/HelperMigration/RequireDefinedGuard`: remove `if defined?(Legion::...)` from require statements (auto-fix)
+- New cop `Legion/HelperMigration/DefinedTransportGuard`: use `transport_connected?` instead of `defined?(Legion::Transport)`
+- New cop `Legion/Extension/RunnerPluralModule`: enforce `module Runners` (plural), auto-correctable
+- New cop `Legion/Extension/ActorInheritance`: actor must inherit from Every, Once, Poll, Subscription, Loop, or Nothing
+- New cop `Legion/Extension/EveryActorRequiresTime`: Every/Poll actors must call `time` DSL
+- New cop `Legion/Extension/HookMissingRunnerClass`: hook classes must override `runner_class`
+- New cop `Legion/Extension/AbsorberMissingPattern`: absorber classes must call `pattern` DSL
+- New cop `Legion/Extension/AbsorberMissingAbsorbMethod`: absorber classes must define `absorb` method
+- New cop `Legion/Extension/DefinitionCallMismatched`: `definition :name` must have matching `def name`
+
 ## [0.1.3] - 2026-03-29
 
 ### Added

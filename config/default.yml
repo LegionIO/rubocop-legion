@@ -49,6 +49,30 @@ Legion/HelperMigration/LoggingGuard:
   Severity: convention
   VersionAdded: '0.1.2'
 
+Legion/HelperMigration/DirectData:
+  Description: 'Use `data_connection`/`local_data_*` helpers instead of `Legion::Data::Connection`/`Legion::Data::Local` methods.'
+  Enabled: true
+  Severity: convention
+  VersionAdded: '0.1.4'
+
+Legion/HelperMigration/DirectLlmEmbed:
+  Description: 'Use `llm_embed` helper instead of `Legion::LLM.embed`.'
+  Enabled: true
+  Severity: convention
+  VersionAdded: '0.1.4'
+
+Legion/HelperMigration/RequireDefinedGuard:
+  Description: 'Remove `if defined?(Legion::...)` guard from `require`/`require_relative` statements.'
+  Enabled: true
+  Severity: convention
+  VersionAdded: '0.1.4'
+
+Legion/HelperMigration/DefinedTransportGuard:
+  Description: 'Use `transport_connected?` instead of `defined?(Legion::Transport)`.'
+  Enabled: true
+  Severity: convention
+  VersionAdded: '0.1.4'
+
 # Legion/ConstantSafety — prevent namespace resolution bugs inside module Legion
 
 Legion/ConstantSafety:
@@ -163,6 +187,12 @@ Legion/Framework/CacheTimeCoercion:
   Severity: convention
   VersionAdded: '0.1'
 
+Legion/Framework/MutexNestedSync:
+  Description: 'Nested `synchronize` blocks risk deadlock if the same mutex is re-acquired.'
+  Enabled: true
+  Severity: warning
+  VersionAdded: '0.1.5'
+
 Legion/Framework/ApiStringKeys:
   Description: '`Legion::JSON.load` returns symbol keys. Use `body[:key]` not `body["key"]`.'
   Enabled: true
@@ -241,3 +271,51 @@ Legion/Extension/DataRequiredWithoutMigrations:
   Enabled: true
   Severity: warning
   VersionAdded: '0.1'
+
+Legion/Extension/RunnerPluralModule:
+  Description: 'Use `module Runners` (plural). Framework discovers runners in `Runners`, not `Runner`.'
+  Enabled: true
+  Severity: error
+  VersionAdded: '0.1.4'
+
+Legion/Extension/ActorInheritance:
+  Description: 'Actor must inherit from Every, Once, Poll, Subscription, Loop, or Nothing.'
+  Enabled: true
+  Severity: error
+  VersionAdded: '0.1.4'
+
+Legion/Extension/EveryActorRequiresTime:
+  Description: 'Every/Poll actors must call the `time` DSL method to set the interval.'
+  Enabled: true
+  Severity: warning
+  VersionAdded: '0.1.4'
+
+Legion/Extension/HookMissingRunnerClass:
+  Description: 'Hook classes must override `runner_class` or the framework dispatches to nil.'
+  Enabled: true
+  Severity: error
+  VersionAdded: '0.1.4'
+
+Legion/Extension/AbsorberMissingPattern:
+  Description: 'Absorber classes must call the `pattern` DSL method to match events.'
+  Enabled: true
+  Severity: warning
+  VersionAdded: '0.1.4'
+
+Legion/Extension/AbsorberMissingAbsorbMethod:
+  Description: 'Absorber classes must define an `absorb` method to handle matched events.'
+  Enabled: true
+  Severity: warning
+  VersionAdded: '0.1.4'
+
+Legion/Extension/ActorEnabledSideEffects:
+  Description: '`enabled?` runs during extension loading. Keep it cheap and side-effect-free.'
+  Enabled: true
+  Severity: convention
+  VersionAdded: '0.1.5'
+
+Legion/Extension/DefinitionCallMismatched:
+  Description: '`definition :name` must have a matching `def name` method in the same module.'
+  Enabled: true
+  Severity: error
+  VersionAdded: '0.1.4'

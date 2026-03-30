@@ -34,6 +34,8 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'lint_roller', '~> 1.1'
   spec.add_dependency 'rubocop', '~> 1.86'
   spec.add_dependency 'rubocop-ast', '~> 1.44'
+  spec.add_dependency 'rubocop-performance', '~> 1.25'
+  spec.add_dependency 'rubocop-thread_safety', '~> 0.7'
 
   spec.add_development_dependency 'rspec', '~> 3.13'
 end

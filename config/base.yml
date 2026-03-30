@@ -58,3 +58,38 @@ Naming/PredicateMethod:
 
 Gemspec/DevelopmentDependencies:
   Enabled: false
+
+# --- Performance ---
+# All Performance cops enabled by default (rubocop-performance).
+# Override per-repo only if needed.
+
+Performance:
+  Enabled: true
+
+# --- Thread Safety ---
+# LegionIO is a concurrent async engine. These cops catch real bugs.
+
+ThreadSafety:
+  Enabled: true
+
+ThreadSafety/NewThread:
+  Enabled: true
+  Exclude:
+    - 'lib/**/service.rb'
+    - 'lib/**/service/**/*.rb'
+    - 'lib/**/connection.rb'
+    - 'lib/**/connection/**/*.rb'
+    - 'spec/**/*'
+
+ThreadSafety/ClassInstanceVariable:
+  Enabled: true
+  Exclude:
+    - 'lib/**/singleton/**/*.rb'
+    - 'spec/**/*'
+
+ThreadSafety/RackMiddlewareInstanceVariable:
+  Enabled: false
+
+ThreadSafety/DirChdir:
+  Enabled: true
+  AllowCallWithBlock: true

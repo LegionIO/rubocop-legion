@@ -11,6 +11,8 @@ inherit_from: base.yml
 
 plugins:
   - rubocop-legion
+  - rubocop-performance
+  - rubocop-thread_safety
 
 Metrics/ParameterLists:
   Max: 8

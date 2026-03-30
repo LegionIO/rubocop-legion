@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.1.7] - 2026-03-29
+
+### Added
+- New cop `Legion/HelperMigration/DirectTransport`: use `transport_*` helpers instead of `Legion::Transport::Connection`/`Spool` methods (auto-fix)
+- New cop `Legion/HelperMigration/DirectKnowledge`: use `query_knowledge`/`ingest_knowledge` helpers instead of `Legion::Apollo`/`Legion::Apollo::Local` methods (auto-fix)
+
+### Changed
+- Renamed `Legion/HelperMigration/DirectLlmEmbed` to `Legion/HelperMigration/DirectLlm` — now covers `chat`, `ask`, `structured`, `embed_batch` in addition to `embed`
+- Expanded `Legion/HelperMigration/DirectJson` to cover `parse`, `generate`, `pretty_generate`
+- Expanded `Legion/HelperMigration/DirectCache` to cover `fetch`, `connected?`
+- Expanded `Legion/HelperMigration/DirectLocalCache` to cover `delete`, `fetch`
+- Expanded `Legion/HelperMigration/DirectCrypt` to cover `write`
+
 ## [0.1.6] - 2026-03-29
 
 ### Added

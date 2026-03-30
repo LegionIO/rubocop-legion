@@ -64,6 +64,32 @@ RSpec.describe RuboCop::Cop::Legion::HelperMigration::DirectCache, :config do
     end
   end
 
+  context 'with Legion::Cache.fetch' do
+    it 'registers an offense and auto-corrects' do
+      expect_offense(<<~RUBY)
+        Legion::Cache.fetch(key) { compute }
+        ^^^^^^^^^^^^^^^^^^^^^^^^ Use `cache_fetch` instead of `Legion::Cache.fetch`. Include the appropriate cache helper mixin.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        cache_fetch(key) { compute }
+      RUBY
+    end
+  end
+
+  context 'with Legion::Cache.connected?' do
+    it 'registers an offense and auto-corrects' do
+      expect_offense(<<~RUBY)
+        Legion::Cache.connected?
+        ^^^^^^^^^^^^^^^^^^^^^^^^ Use `cache_connected?` instead of `Legion::Cache.connected?`. Include the appropriate cache helper mixin.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        cache_connected?
+      RUBY
+    end
+  end
+
   it 'does not flag cache_get' do
     expect_no_offenses('cache_get(key)')
   end

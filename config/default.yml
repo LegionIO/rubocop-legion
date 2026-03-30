@@ -20,28 +20,32 @@ Legion/HelperMigration/OldLoggingMethods:
   VersionAdded: '0.1'
 
 Legion/HelperMigration/DirectJson:
-  Description: 'Use `json_load`/`json_dump` helpers instead of `Legion::JSON.load`/`.dump`.'
+  Description: 'Use `json_*` helpers instead of `Legion::JSON` methods.'
   Enabled: true
   Severity: convention
   VersionAdded: '0.1'
+  VersionChanged: '0.1.7'
 
 Legion/HelperMigration/DirectCache:
-  Description: 'Use `cache_get`/`cache_set`/`cache_delete` helpers instead of `Legion::Cache` methods.'
+  Description: 'Use `cache_*` helpers instead of `Legion::Cache` methods.'
   Enabled: true
   Severity: warning
   VersionAdded: '0.1'
+  VersionChanged: '0.1.7'
 
 Legion/HelperMigration/DirectLocalCache:
-  Description: 'Use `local_cache_get`/`local_cache_set` helpers instead of `Legion::Cache::Local` methods.'
+  Description: 'Use `local_cache_*` helpers instead of `Legion::Cache::Local` methods.'
   Enabled: true
   Severity: warning
   VersionAdded: '0.1'
+  VersionChanged: '0.1.7'
 
 Legion/HelperMigration/DirectCrypt:
-  Description: 'Use `vault_get`/`vault_exist?` helpers instead of `Legion::Crypt` methods.'
+  Description: 'Use `vault_*` helpers instead of `Legion::Crypt` methods.'
   Enabled: true
   Severity: warning
   VersionAdded: '0.1'
+  VersionChanged: '0.1.7'
 
 Legion/HelperMigration/LoggingGuard:
   Description: 'Remove unnecessary `respond_to?(:log_warn)` or `defined?(Legion::Logging)` guards.'
@@ -55,11 +59,24 @@ Legion/HelperMigration/DirectData:
   Severity: convention
   VersionAdded: '0.1.4'
 
-Legion/HelperMigration/DirectLlmEmbed:
-  Description: 'Use `llm_embed` helper instead of `Legion::LLM.embed`.'
+Legion/HelperMigration/DirectLlm:
+  Description: 'Use `llm_*` helpers instead of `Legion::LLM` methods.'
   Enabled: true
   Severity: convention
   VersionAdded: '0.1.4'
+  VersionChanged: '0.1.7'
+
+Legion/HelperMigration/DirectTransport:
+  Description: 'Use `transport_*` helpers instead of `Legion::Transport::Connection`/`Spool` methods.'
+  Enabled: true
+  Severity: convention
+  VersionAdded: '0.1.7'
+
+Legion/HelperMigration/DirectKnowledge:
+  Description: 'Use `query_knowledge`/`ingest_knowledge` helpers instead of `Legion::Apollo` methods.'
+  Enabled: true
+  Severity: convention
+  VersionAdded: '0.1.7'
 
 Legion/HelperMigration/RequireDefinedGuard:
   Description: 'Remove `if defined?(Legion::...)` guard from `require`/`require_relative` statements.'

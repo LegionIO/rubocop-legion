@@ -44,6 +44,26 @@ RSpec.describe RuboCop::Cop::Legion::HelperMigration::DirectCrypt, :config do
     end
   end
 
+  context 'with Legion::Crypt.write' do
+    it 'registers an offense' do
+      expect_offense(<<~RUBY)
+        Legion::Crypt.write(path, data)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `vault_write` instead of `Legion::Crypt.write`. Include the appropriate Vault/Crypt helper mixin.
+      RUBY
+    end
+
+    it 'auto-corrects to vault_write' do
+      expect_offense(<<~RUBY)
+        Legion::Crypt.write(path, data)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `vault_write` instead of `Legion::Crypt.write`. Include the appropriate Vault/Crypt helper mixin.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        vault_write(path, data)
+      RUBY
+    end
+  end
+
   it 'does not flag vault_get' do
     expect_no_offenses('vault_get(path)')
   end

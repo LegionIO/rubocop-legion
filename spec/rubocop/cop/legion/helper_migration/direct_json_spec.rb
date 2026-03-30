@@ -44,6 +44,52 @@ RSpec.describe RuboCop::Cop::Legion::HelperMigration::DirectJson, :config do
     end
   end
 
+  context 'with Legion::JSON.parse' do
+    it 'registers an offense' do
+      expect_offense(<<~RUBY)
+        Legion::JSON.parse(str)
+        ^^^^^^^^^^^^^^^^^^^^^^^ Use `json_parse` instead of `Legion::JSON.parse`. Include the appropriate JSON helper mixin.
+      RUBY
+    end
+
+    it 'auto-corrects to json_parse' do
+      expect_offense(<<~RUBY)
+        Legion::JSON.parse(str)
+        ^^^^^^^^^^^^^^^^^^^^^^^ Use `json_parse` instead of `Legion::JSON.parse`. Include the appropriate JSON helper mixin.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        json_parse(str)
+      RUBY
+    end
+  end
+
+  context 'with Legion::JSON.generate' do
+    it 'registers an offense and auto-corrects' do
+      expect_offense(<<~RUBY)
+        Legion::JSON.generate(obj)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `json_generate` instead of `Legion::JSON.generate`. Include the appropriate JSON helper mixin.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        json_generate(obj)
+      RUBY
+    end
+  end
+
+  context 'with Legion::JSON.pretty_generate' do
+    it 'registers an offense and auto-corrects' do
+      expect_offense(<<~RUBY)
+        Legion::JSON.pretty_generate(obj)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `json_pretty_generate` instead of `Legion::JSON.pretty_generate`. Include the appropriate JSON helper mixin.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        json_pretty_generate(obj)
+      RUBY
+    end
+  end
+
   it 'does not flag json_load' do
     expect_no_offenses('json_load(str)')
   end

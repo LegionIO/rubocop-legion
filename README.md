@@ -85,19 +85,21 @@ No per-repo configuration needed for scoping. If a cop doesn't apply to your gem
 | Framework | `CacheTimeCoercion` | cache_get | convention | no | Time objects become Strings after cache round-trip |
 | Framework | `ApiStringKeys` | Legion::JSON.load | warning | yes | `Legion::JSON.load` returns symbol keys — use `body[:key]` |
 
-### LEX Extensions Only (`lib/legion/extensions/**/*.rb`) — 29 cops
+### LEX Extensions Only (`lib/legion/extensions/**/*.rb`) — 31 cops
 
 | Department | Cop | Severity | Auto-fix | Description |
 |---|---|---|---|---|
 | HelperMigration | `DirectLogging` | warning | yes | Use `log.method` instead of `Legion::Logging.method` |
 | HelperMigration | `OldLoggingMethods` | warning | yes | Use `log.method` instead of deprecated `log_method` helpers |
-| HelperMigration | `DirectJson` | convention | yes | Use `json_load`/`json_dump` instead of `Legion::JSON` |
-| HelperMigration | `DirectCache` | warning | yes | Use `cache_get`/`cache_set` instead of `Legion::Cache` |
-| HelperMigration | `DirectLocalCache` | warning | yes | Use `local_cache_get`/`local_cache_set` instead of `Legion::Cache::Local` |
-| HelperMigration | `DirectCrypt` | warning | yes | Use `vault_get`/`vault_exist?` instead of `Legion::Crypt` |
+| HelperMigration | `DirectJson` | convention | yes | Use `json_*` helpers instead of `Legion::JSON` methods |
+| HelperMigration | `DirectCache` | warning | yes | Use `cache_*` helpers instead of `Legion::Cache` methods |
+| HelperMigration | `DirectLocalCache` | warning | yes | Use `local_cache_*` helpers instead of `Legion::Cache::Local` methods |
+| HelperMigration | `DirectCrypt` | warning | yes | Use `vault_*` helpers instead of `Legion::Crypt` methods |
 | HelperMigration | `LoggingGuard` | convention | no | Remove unnecessary `respond_to?(:log_warn)` / `defined?(Legion::Logging)` guards |
 | HelperMigration | `DirectData` | convention | yes | Use `data_connection`/`local_data_*` instead of `Legion::Data::Connection`/`Local` |
-| HelperMigration | `DirectLlmEmbed` | convention | yes | Use `llm_embed` instead of `Legion::LLM.embed` |
+| HelperMigration | `DirectLlm` | convention | yes | Use `llm_*` helpers instead of `Legion::LLM` methods |
+| HelperMigration | `DirectTransport` | convention | yes | Use `transport_*` helpers instead of `Legion::Transport::Connection`/`Spool` |
+| HelperMigration | `DirectKnowledge` | convention | yes | Use `query_knowledge`/`ingest_knowledge` instead of `Legion::Apollo` methods |
 | HelperMigration | `RequireDefinedGuard` | convention | yes | Remove `if defined?(Legion::...)` guard from `require` statements |
 | HelperMigration | `DefinedTransportGuard` | convention | no | Use `transport_connected?` instead of `defined?(Legion::Transport)` |
 | Extension | `ActorSingularModule` | error | yes | Use `module Actor` (singular) — framework discovers `Actor`, not `Actors` |
@@ -119,7 +121,7 @@ No per-repo configuration needed for scoping. If a cop doesn't apply to your gem
 | Extension | `ActorEnabledSideEffects` | convention | no | `enabled?` runs during boot — keep side-effect-free |
 | Extension | `DataRequiredWithoutMigrations` | warning | no | `data_required?` returns true but migrations may be missing |
 
-**Total: 45 custom cops** across 6 departments, 19 auto-correctable.
+**Total: 47 custom cops** across 6 departments, 21 auto-correctable.
 
 ### Bundled Plugins
 

@@ -4,7 +4,7 @@
 
 ## What is This?
 
-Custom RuboCop plugin gem for the LegionIO ecosystem. Provides 45 AST-based cops across 6 departments. Uses the new RuboCop Plugin API (1.72+, lint_roller-based) with auto-discovery via gemspec metadata.
+Custom RuboCop plugin gem for the LegionIO ecosystem. Provides 47 AST-based cops across 6 departments. Uses the new RuboCop Plugin API (1.72+, lint_roller-based) with auto-discovery via gemspec metadata.
 
 **GitHub**: https://github.com/LegionIO/rubocop-legion
 **RubyGems**: https://rubygems.org/gems/rubocop-legion
@@ -33,7 +33,7 @@ Cops are scoped by gem type — no per-repo configuration needed:
 
 - **Universal** (9 cops): Fire on all LegionIO gems
 - **Library-specific** (6 cops): Fire on all gems but only trigger when using Sequel, Sinatra, Thor, Faraday, or cache
-- **LEX-only** (28 cops): Scoped to `lib/legion/extensions/**/*.rb` via Include directive — never fire on core `legion-*` libraries
+- **LEX-only** (31 cops): Scoped to `lib/legion/extensions/**/*.rb` via Include directive — never fire on core `legion-*` libraries
 
 ## Departments and Cops
 
@@ -56,7 +56,7 @@ Cops are scoped by gem type — no per-repo configuration needed:
 
 ### LEX-Only — 29 cops
 
-- **HelperMigration** (11): `DirectLogging`, `OldLoggingMethods`, `DirectJson`, `DirectCache`, `DirectLocalCache`, `DirectCrypt`, `DirectData`, `DirectLlmEmbed`, `RequireDefinedGuard` (all auto-fix) — use per-extension helpers, not global singletons. `LoggingGuard` (no auto-fix) — remove unnecessary `respond_to?(:log_warn)` / `defined?(Legion::Logging)` guards. `DefinedTransportGuard` (no auto-fix) — use `transport_connected?` instead of `defined?(Legion::Transport)`.
+- **HelperMigration** (13): `DirectLogging`, `OldLoggingMethods`, `DirectJson`, `DirectCache`, `DirectLocalCache`, `DirectCrypt`, `DirectData`, `DirectLlm`, `DirectTransport`, `DirectKnowledge`, `RequireDefinedGuard` (all auto-fix) — use per-extension helpers, not global singletons. `LoggingGuard` (no auto-fix) — remove unnecessary `respond_to?(:log_warn)` / `defined?(Legion::Logging)` guards. `DefinedTransportGuard` (no auto-fix) — use `transport_connected?` instead of `defined?(Legion::Transport)`.
 - **Extension** (18): `ActorSingularModule` (auto-fix), `RunnerPluralModule` (auto-fix), `CoreExtendGuard` (auto-fix), `RunnerMustBeModule`, `RunnerIncludeHelpers`, `ActorInheritance`, `EveryActorRequiresTime`, `SelfContainedActorRunnerClass`, `HookMissingRunnerClass`, `AbsorberMissingPattern`, `AbsorberMissingAbsorbMethod`, `DefinitionCallMismatched`, `RunnerReturnHash`, `SettingsKeyMethod` (auto-fix), `SettingsBracketMultiArg` (auto-fix), `LlmAskKwargs`, `ActorEnabledSideEffects`, `DataRequiredWithoutMigrations`.
 
 ## Architecture
@@ -71,7 +71,7 @@ rubocop-legion/
 │       │   ├── version.rb
 │       │   └── plugin.rb             # LintRoller::Plugin (auto-discovery)
 │       └── cop/legion/
-│           ├── helper_migration/      # 7 cops (lex-only)
+│           ├── helper_migration/      # 13 cops (lex-only)
 │           ├── constant_safety/       # 4 cops (universal)
 │           ├── singleton/             # 1 cop  (universal)
 │           ├── rescue_logging/        # 3 cops (universal)
@@ -97,7 +97,7 @@ rubocop-legion/
 
 ```bash
 bundle install
-bundle exec rspec      # 322 specs
+bundle exec rspec      # 350 specs
 bundle exec rubocop    # Self-linting
 ```
 

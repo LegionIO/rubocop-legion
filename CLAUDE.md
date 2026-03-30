@@ -10,6 +10,19 @@ Custom RuboCop plugin gem for the LegionIO ecosystem. Provides 32 AST-based cops
 **RubyGems**: https://rubygems.org/gems/rubocop-legion
 **License**: MIT
 
+## Shared Config Profiles
+
+The gem ships shared `.rubocop.yml` profiles so repos don't duplicate config:
+
+- `config/base.yml` — all shared settings (AllCops, Layout, Metrics, Style, Naming)
+- `config/lex.yml` — inherits base, adds plugin + `ParameterLists Max: 8`
+- `config/core.yml` — inherits base, adds plugin + `ParameterLists Max: 10, CountKeywordArgs: false`
+
+**LEX repos**: `inherit_gem: { rubocop-legion: config/lex.yml }`
+**Core repos**: `inherit_gem: { rubocop-legion: config/core.yml }`
+
+Repo-specific overrides go below the `inherit_gem` directive. Version-locked with the gem — bump gem version = all repos get updated config.
+
 ## Cop Scoping
 
 Cops are scoped by gem type — no per-repo configuration needed:

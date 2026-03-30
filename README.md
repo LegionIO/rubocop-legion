@@ -14,14 +14,36 @@ gem 'rubocop-legion', '~> 0.1', require: false, group: :development
 
 ## Usage
 
-Add to your `.rubocop.yml`:
+Use a shared config profile that includes the plugin, all standard settings, and cop defaults:
+
+**For `lex-*` extension gems:**
 
 ```yaml
-plugins:
-  - rubocop-legion
+# .rubocop.yml
+inherit_gem:
+  rubocop-legion: config/lex.yml
 ```
 
+**For `legion-*` core library gems:**
+
+```yaml
+# .rubocop.yml
+inherit_gem:
+  rubocop-legion: config/core.yml
+```
+
+Add repo-specific overrides below the `inherit_gem` directive. For manual setup without shared config, use `plugins: [rubocop-legion]` directly.
+
 Requires RuboCop 1.72+ (Plugin API with lint_roller).
+
+### What the shared configs include
+
+Both profiles set: `TargetRubyVersion: 3.4`, `NewCops: enable`, `LineLength: 160`, `MethodLength: 50`, `ClassLength: 1500`, `ModuleLength: 1500`, `BlockLength: 40` (spec/gemspec excluded), `AbcSize: 60`, table-aligned hashes, frozen string literals, and disable `Style/Documentation`, `Naming/FileName`, `Naming/PredicateMethod`, and `Gemspec/DevelopmentDependencies`.
+
+| Profile | `ParameterLists Max` | `CountKeywordArgs` |
+|---------|---------------------|--------------------|
+| `lex.yml` | 8 | default (true) |
+| `core.yml` | 10 | false |
 
 ## Cop Scoping
 

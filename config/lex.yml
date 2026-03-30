@@ -1,0 +1,16 @@
+# Shared RuboCop configuration for lex-* extension gems.
+#
+# Usage in your .rubocop.yml:
+#
+#   inherit_gem:
+#     rubocop-legion: config/lex.yml
+#
+#   # Repo-specific overrides below (if any)
+
+inherit_from: base.yml
+
+plugins:
+  - rubocop-legion
+
+Metrics/ParameterLists:
+  Max: 8

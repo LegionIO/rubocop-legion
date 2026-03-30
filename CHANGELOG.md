@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.1.3] - 2026-03-29
+
+### Added
+- Shared config profiles: `config/lex.yml` for lex-* gems, `config/core.yml` for legion-* gems
+- Use `inherit_gem: { rubocop-legion: config/lex.yml }` to replace 60-line .rubocop.yml with 2 lines
+
 ## [0.1.2] - 2026-03-29
 
 ### Added

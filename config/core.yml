@@ -1,0 +1,17 @@
+# Shared RuboCop configuration for legion-* core library gems.
+#
+# Usage in your .rubocop.yml:
+#
+#   inherit_gem:
+#     rubocop-legion: config/core.yml
+#
+#   # Repo-specific overrides below (if any)
+
+inherit_from: base.yml
+
+plugins:
+  - rubocop-legion
+
+Metrics/ParameterLists:
+  Max: 10
+  CountKeywordArgs: false

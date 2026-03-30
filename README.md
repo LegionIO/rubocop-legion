@@ -2,14 +2,14 @@
 
 LegionIO code quality cops for [RuboCop](https://rubocop.org/).
 
-Custom cops for the LegionIO async job engine ecosystem. Enforces helper usage, constant safety, rescue logging, framework conventions, and LEX extension structure.
+Custom cops for the LegionIO async job engine ecosystem. Enforces helper usage, constant safety, rescue logging, framework conventions, and LEX extension structure. Replaces the regex-based `lint-patterns.yml` CI workflow with precise AST-based analysis and auto-correction.
 
 ## Installation
 
 Add to your Gemfile:
 
 ```ruby
-gem 'rubocop-legion', require: false, group: :development
+gem 'rubocop-legion', '~> 0.1', require: false, group: :development
 ```
 
 ## Usage
@@ -21,16 +21,78 @@ plugins:
   - rubocop-legion
 ```
 
-## Departments
+Requires RuboCop 1.72+ (Plugin API with lint_roller).
 
-| Department | Cops | Description |
-|---|---|---|
-| `Legion/HelperMigration` | 6 | Use per-extension helpers, not global singletons |
-| `Legion/ConstantSafety` | 4 | Prevent namespace resolution bugs inside `module Legion` |
-| `Legion/Singleton` | 1 | Enforce `.instance` on singleton classes |
-| `Legion/RescueLogging` | 3 | Every rescue must log or re-raise |
-| `Legion/Framework` | 7 | Sequel, Sinatra, Thor, Faraday, and API gotchas |
-| `Legion/Extension` | 10 | LEX structural convention enforcement |
+## Cop Scoping
+
+Cops are automatically scoped based on where they should apply:
+
+- **Universal cops** fire on all LegionIO gems (any code inside `module Legion`)
+- **Library-specific cops** fire on all gems but only trigger when using a specific library (Sequel, Sinatra, Thor, Faraday, etc.)
+- **LEX-only cops** fire only on `lib/legion/extensions/**/*.rb` — they don't apply to core `legion-*` libraries
+
+No per-repo configuration needed for scoping. If a cop doesn't apply to your gem type, it won't fire.
+
+## Cops
+
+### Universal (all LegionIO gems) — 9 cops
+
+| Department | Cop | Severity | Auto-fix | Description |
+|---|---|---|---|---|
+| ConstantSafety | `BareDataDefine` | error | yes | Use `::Data.define` inside `module Legion` to avoid `Legion::Data` |
+| ConstantSafety | `BareProcess` | error | yes | Use `::Process` inside `module Legion` to avoid `Legion::Process` |
+| ConstantSafety | `BareJson` | error | yes | Use `::JSON` inside `module Legion` to avoid `Legion::JSON` |
+| ConstantSafety | `InheritParam` | convention | yes | Pass `false` to `const_defined?`/`const_get` on dynamic modules |
+| RescueLogging | `BareRescue` | warning | yes | Bare `rescue` swallows exceptions — capture with `rescue => e` |
+| RescueLogging | `NoCapture` | convention | no | Exception class specified but not captured (`rescue Error` without `=> e`) |
+| RescueLogging | `SilentCapture` | warning | no | Captured exception never logged or re-raised |
+| Singleton | `UseInstance` | error | yes | Use `.instance` instead of `.new` for singleton classes |
+| Framework | `ModuleFunctionPrivate` | convention | no | `private` after `module_function` resets visibility |
+
+### Library-Specific (all gems, triggers on library usage) — 6 cops
+
+| Department | Cop | Triggers on | Severity | Auto-fix | Description |
+|---|---|---|---|---|---|
+| Framework | `EagerSequelModel` | Sequel | warning | no | `Sequel::Model(:table)` introspects schema at require time |
+| Framework | `SinatraHostAuth` | Sinatra | convention | no | Sinatra 4.0+ requires `set :host_authorization` |
+| Framework | `ThorReservedRun` | Thor | warning | no | Thor 1.5+ reserves `run` — rename or use `map` |
+| Framework | `FaradayXmlMiddleware` | Faraday | error | no | Faraday 2.0+ removed built-in `:xml` middleware |
+| Framework | `CacheTimeCoercion` | cache_get | convention | no | Time objects become Strings after cache round-trip |
+| Framework | `ApiStringKeys` | Legion::JSON.load | warning | yes | `Legion::JSON.load` returns symbol keys — use `body[:key]` |
+
+### LEX Extensions Only (`lib/legion/extensions/**/*.rb`) — 17 cops
+
+| Department | Cop | Severity | Auto-fix | Description |
+|---|---|---|---|---|
+| HelperMigration | `DirectLogging` | warning | yes | Use `log.method` instead of `Legion::Logging.method` |
+| HelperMigration | `OldLoggingMethods` | warning | yes | Use `log.method` instead of deprecated `log_method` helpers |
+| HelperMigration | `DirectJson` | convention | yes | Use `json_load`/`json_dump` instead of `Legion::JSON` |
+| HelperMigration | `DirectCache` | warning | yes | Use `cache_get`/`cache_set` instead of `Legion::Cache` |
+| HelperMigration | `DirectLocalCache` | warning | yes | Use `local_cache_get`/`local_cache_set` instead of `Legion::Cache::Local` |
+| HelperMigration | `DirectCrypt` | warning | yes | Use `vault_get`/`vault_exist?` instead of `Legion::Crypt` |
+| HelperMigration | `LoggingGuard` | convention | no | Remove unnecessary `respond_to?(:log_warn)` / `defined?(Legion::Logging)` guards |
+| Extension | `ActorSingularModule` | error | yes | Use `module Actor` (singular) — framework discovers `Actor`, not `Actors` |
+| Extension | `CoreExtendGuard` | error | yes | Guard `extend Core` with `const_defined?` for standalone compatibility |
+| Extension | `RunnerMustBeModule` | warning | no | Runners must be modules, not classes |
+| Extension | `RunnerIncludeHelpers` | convention | no | Runner modules need `include Helpers::Lex` or `extend self` |
+| Extension | `SelfContainedActorRunnerClass` | warning | no | Self-contained actors must override `runner_class` |
+| Extension | `RunnerReturnHash` | convention | no | Runner methods must return a Hash |
+| Extension | `SettingsKeyMethod` | error | yes | `Legion::Settings` has no `key?` — use `!Settings[:key].nil?` |
+| Extension | `SettingsBracketMultiArg` | error | yes | `Settings#[]` takes 1 arg — use `Settings.dig(...)` for nested access |
+| Extension | `LlmAskKwargs` | error | no | `Legion::LLM.ask` only accepts `message:` — no extra kwargs |
+| Extension | `DataRequiredWithoutMigrations` | warning | no | `data_required?` returns true but migrations may be missing |
+
+**Total: 32 cops** across 6 departments, 15 auto-correctable.
+
+## Per-Repo Overrides
+
+Most repos need no overrides. Common exceptions:
+
+```yaml
+# Repos using Faraday JSON middleware (string keys, not Legion::JSON symbol keys)
+Legion/Framework/ApiStringKeys:
+  Enabled: false
+```
 
 ## License
 

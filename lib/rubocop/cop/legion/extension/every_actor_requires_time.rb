@@ -59,7 +59,11 @@ module RuboCop
 
             node.body.each_node(:send).any? do |send_node|
               send_node.method_name == :time && send_node.receiver.nil?
-            end
+            end || defines_time_method?(node)
+          end
+
+          def defines_time_method?(node)
+            node.body.each_node(:def).any? { |def_node| def_node.method_name == :time }
           end
         end
       end

@@ -336,3 +336,30 @@ Legion/Extension/DefinitionCallMismatched:
   Enabled: true
   Severity: error
   VersionAdded: '0.1.4'
+
+# Legion/Framework — N×N routing guard cops (Phase 6 enforcement)
+
+Legion/Framework/NoUnderscorePrefixedKwargs:
+  Description: 'Ban underscore-prefixed kwargs and `**_rest` splats. Use plain kwarg, defaulted kwarg, or `**opts`.'
+  Enabled: true
+  Severity: warning
+  VersionAdded: '0.1.8'
+
+Legion/Framework/NoInlineSettingDefaults:
+  Description: 'Flag `Legion::Settings[...] || <literal>` and shadow-default patterns. Defaults belong in `settings.rb`.'
+  Enabled: true
+  Severity: warning
+  VersionAdded: '0.1.8'
+
+Legion/Framework/NoDirectDispatch:
+  Description: 'Ban `_direct` methods on `Legion::LLM` modules. All inference routes through the governed pipeline.'
+  Enabled: true
+  Severity: error
+  VersionAdded: '0.1.8'
+
+Legion/Framework/NoShapeDuckTyping:
+  Description: 'Flag `respond_to?` on canonical shape methods and string-key fallback access. Disabled by default.'
+  Enabled: false
+  Severity: convention
+  VersionAdded: '0.1.8'
+  Safe: false

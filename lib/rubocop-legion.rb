@@ -44,6 +44,10 @@ require 'rubocop/cop/legion/framework/module_function_private'
 require 'rubocop/cop/legion/framework/cache_time_coercion'
 require 'rubocop/cop/legion/framework/api_string_keys'
 require 'rubocop/cop/legion/framework/mutex_nested_sync'
+require 'rubocop/cop/legion/framework/no_underscore_prefixed_kwargs'
+require 'rubocop/cop/legion/framework/no_inline_setting_defaults'
+require 'rubocop/cop/legion/framework/no_direct_dispatch'
+require 'rubocop/cop/legion/framework/no_shape_duck_typing'
 
 # Legion/Extension
 require 'rubocop/cop/legion/extension/actor_singular_module'

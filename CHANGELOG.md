@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.8] - 2026-06-16
+
+### Added
+- New cop `Legion/Framework/NoUnderscorePrefixedKwargs`: ban `_foo:` keyword arguments and `**_rest` splats; autocorrects to plain names / `**opts`
+- New cop `Legion/Framework/NoInlineSettingDefaults`: flag `Legion::Settings[...] || <literal>` and shadow-default patterns (tunables belong in `settings.rb`)
+- New cop `Legion/Framework/NoDirectDispatch`: ban `*_direct` methods on `Legion::LLM` modules (every pipeline exit must route through the governed pipeline)
+- New cop `Legion/Framework/NoShapeDuckTyping` (disabled by default): flag `respond_to?` on canonical shape methods and string-key fallback access on canonical bodies
+
 ## [0.1.7] - 2026-03-29
 
 ### Added

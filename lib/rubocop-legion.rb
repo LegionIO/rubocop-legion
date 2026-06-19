@@ -68,3 +68,9 @@ require 'rubocop/cop/legion/extension/absorber_missing_pattern'
 require 'rubocop/cop/legion/extension/absorber_missing_absorb_method'
 require 'rubocop/cop/legion/extension/definition_call_mismatched'
 require 'rubocop/cop/legion/extension/actor_enabled_side_effects'
+
+# Legion/Llm
+require 'rubocop/cop/legion/llm/settings_access_path'
+require 'rubocop/cop/legion/llm/no_loop_do'
+require 'rubocop/cop/legion/llm/rescue_log_level'
+require 'rubocop/cop/legion/llm/taxonomy_enum'

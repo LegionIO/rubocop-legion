@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.10] - 2026-07-31
+
+### Fixed
+- `Legion/Llm/TaxonomyEnum` no longer over-matches: `:type` is only validated when it appears alongside `:tier` or `:circuit_state` in the same hash (taxonomy context). Previously any `{ type: :string }` or schema hash triggered a false positive.
+- Added `Legion/Llm` department to `config/default.yml` — all four cops (`TaxonomyEnum`, `SettingsAccessPath`, `NoLoopDo`, `RescueLogLevel`) were loaded but never registered in the config, causing consumer repos to report "unrecognized cop" when referencing `Legion/Llm/TaxonomyEnum`.
+- `TaxonomyEnum` is now Include-scoped to `lib/legion/llm/**/*.rb` and `lib/legion/extensions/llm/**/*.rb` so it only runs on LLM routing code.
+
 ## [0.1.8] - 2026-06-16
 
 ### Added

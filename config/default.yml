@@ -363,3 +363,38 @@ Legion/Framework/NoShapeDuckTyping:
   Severity: convention
   VersionAdded: '0.1.8'
   Safe: false
+
+# Legion/Llm — cops specific to legion-llm and lex-llm-* provider pipelines
+
+Legion/Llm:
+  Enabled: true
+  Include:
+    - 'lib/legion/llm/**/*.rb'
+    - 'lib/legion/extensions/llm/**/*.rb'
+
+Legion/Llm/TaxonomyEnum:
+  Description: 'Validate :tier, :type, and :circuit_state literals against LegionIO taxonomy enums.'
+  Enabled: true
+  Severity: convention
+  VersionAdded: '0.1.9'
+  Include:
+    - 'lib/legion/llm/**/*.rb'
+    - 'lib/legion/extensions/llm/**/*.rb'
+
+Legion/Llm/SettingsAccessPath:
+  Description: 'Use `Legion::Settings.dig(...)` instead of `Legion::Settings.loader.settings[...][...]`.'
+  Enabled: true
+  Severity: convention
+  VersionAdded: '0.1.9'
+
+Legion/Llm/NoLoopDo:
+  Description: 'Ban `loop do` — use bounded iteration (`N.times`, `each`, or `while` with explicit bound).'
+  Enabled: true
+  Severity: warning
+  VersionAdded: '0.1.9'
+
+Legion/Llm/RescueLogLevel:
+  Description: 'Minimum log level for `handle_exception` in rescue blocks is `:warn`.'
+  Enabled: true
+  Severity: warning
+  VersionAdded: '0.1.9'

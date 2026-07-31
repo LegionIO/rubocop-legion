@@ -93,7 +93,7 @@ module RuboCop
               pair.key.value if pair.key.sym_type?
             end
 
-            sibling_keys.any? { |k| CONTEXT_KEYS.include?(k) }
+            sibling_keys.intersect?(CONTEXT_KEYS)
           end
         end
       end

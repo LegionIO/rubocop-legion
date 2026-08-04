@@ -42,41 +42,41 @@ RSpec.describe RuboCop::Cop::Legion::Framework::NoUnderscorePrefixedKwargs, :con
   end
 
   context 'underscore-prefixed keyword splats' do
-    it 'registers an offense for **_rest and corrects' do
+    it 'registers an offense for **_rest and corrects to **' do
       expect_offense(<<~RUBY)
         def process(**_rest)
-                    ^^^^^^^ Underscore-prefixed kwarg splat `_rest` is not allowed. Use `**opts` for passthrough.
+                    ^^^^^^^ Underscore-prefixed splat `_rest` means unused — use `**` to accept-and-ignore, or `**opts` only if the body reads `opts`.
         end
       RUBY
 
       expect_correction(<<~RUBY)
-        def process(**opts)
+        def process(**)
         end
       RUBY
     end
 
-    it 'registers an offense for **_ and corrects' do
+    it 'registers an offense for **_ and corrects to **' do
       expect_offense(<<~RUBY)
         def process(**_)
-                    ^^^ Underscore-prefixed kwarg splat `_` is not allowed. Use `**opts` for passthrough.
+                    ^^^ Underscore-prefixed splat `_` means unused — use `**` to accept-and-ignore, or `**opts` only if the body reads `opts`.
         end
       RUBY
 
       expect_correction(<<~RUBY)
-        def process(**opts)
+        def process(**)
         end
       RUBY
     end
 
-    it 'registers an offense for **_opts and corrects' do
+    it 'registers an offense for **_opts and corrects to **' do
       expect_offense(<<~RUBY)
         def process(**_opts)
-                    ^^^^^^^ Underscore-prefixed kwarg splat `_opts` is not allowed. Use `**opts` for passthrough.
+                    ^^^^^^^ Underscore-prefixed splat `_opts` means unused — use `**` to accept-and-ignore, or `**opts` only if the body reads `opts`.
         end
       RUBY
 
       expect_correction(<<~RUBY)
-        def process(**opts)
+        def process(**)
         end
       RUBY
     end
@@ -99,12 +99,12 @@ RSpec.describe RuboCop::Cop::Legion::Framework::NoUnderscorePrefixedKwargs, :con
     it 'registers an offense for underscore splat among normal params' do
       expect_offense(<<~RUBY)
         def process(foo:, **_rest)
-                          ^^^^^^^ Underscore-prefixed kwarg splat `_rest` is not allowed. Use `**opts` for passthrough.
+                          ^^^^^^^ Underscore-prefixed splat `_rest` means unused — use `**` to accept-and-ignore, or `**opts` only if the body reads `opts`.
         end
       RUBY
 
       expect_correction(<<~RUBY)
-        def process(foo:, **opts)
+        def process(foo:, **)
         end
       RUBY
     end

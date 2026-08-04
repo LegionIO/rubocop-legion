@@ -18,15 +18,16 @@ module RuboCop
         #   # good
         #   def foo(bar:); end
         #   def foo(bar: nil); end
-        #   def foo(**opts); end
+        #   def foo(**); end       # unused passthrough
+        #   def foo(**opts); end   # only when the body reads `opts`
         class NoUnderscorePrefixedKwargs < Base
           extend AutoCorrector
 
           MSG_KWARG = 'Underscore-prefixed kwarg `%<name>s` is not allowed. ' \
                       'Use plain kwarg (required), defaulted kwarg (optional), ' \
                       'or `**opts` for passthrough.'
-          MSG_SPLAT = 'Underscore-prefixed kwarg splat `%<name>s` is not allowed. ' \
-                      'Use `**opts` for passthrough.'
+          MSG_SPLAT = 'Underscore-prefixed splat `%<name>s` means unused — use `**` to ' \
+                      'accept-and-ignore, or `**opts` only if the body reads `opts`.'
 
           def on_def(node)
             check_params(node)
@@ -70,7 +71,7 @@ module RuboCop
             return unless name.to_s.start_with?('_')
 
             add_offense(arg, message: format(MSG_SPLAT, name: name)) do |corrector|
-              corrector.replace(arg.source_range, '**opts')
+              corrector.replace(arg.source_range, '**')
             end
           end
 

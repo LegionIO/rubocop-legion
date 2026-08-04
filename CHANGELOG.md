@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.11] - 2026-08-04
+
+### Added
+- New cop `Legion/Framework/NoUnusedArgDisable` (universal): bans `# rubocop:disable`/`:todo`/`:enable Lint/UnusedMethodArgument`. An unused kwarg is a real offense, not something to hide — autocorrect removes the directive so it resurfaces and must be fixed properly (drop the arg, or `**` → `**opts` and read `opts[:key]`). Single-cop directives autocorrect; multi-cop directives are flagged without autocorrect. `# rubocop:disable all` is out of scope.
+
+### Fixed
+- `Legion/Framework/NoUnderscorePrefixedKwargs` now autocorrects an unused splat (`**_opts`, `**_rest`, `**_`) to `**` (nameless accept-and-ignore) instead of `**opts`. The underscore signals the splat is unused; rewriting to a named `**opts` produced a named-but-unused splat that falsely claims the body reads `opts`. `**opts` is correct only when the body actually reads it.
+
 ## [0.1.10] - 2026-07-31
 
 ### Fixed

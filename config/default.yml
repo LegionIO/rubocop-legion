@@ -340,10 +340,16 @@ Legion/Extension/DefinitionCallMismatched:
 # Legion/Framework — N×N routing guard cops (Phase 6 enforcement)
 
 Legion/Framework/NoUnderscorePrefixedKwargs:
-  Description: 'Ban underscore-prefixed kwargs and `**_rest` splats. Use plain kwarg, defaulted kwarg, or `**opts`.'
+  Description: 'Ban underscore-prefixed kwargs and `**_rest` splats. Use plain kwarg, defaulted kwarg, `**opts`, or `**`.'
   Enabled: true
   Severity: warning
   VersionAdded: '0.1.8'
+
+Legion/Framework/NoUnusedArgDisable:
+  Description: 'Ban `# rubocop:disable Lint/UnusedMethodArgument`. Drop the arg or use `**opts`.'
+  Enabled: true
+  Severity: warning
+  VersionAdded: '0.1.11'
 
 Legion/Framework/NoInlineSettingDefaults:
   Description: 'Flag `Legion::Settings[...] || <literal>` and shadow-default patterns. Defaults belong in `settings.rb`.'
